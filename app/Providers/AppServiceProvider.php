@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Blade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,8 +18,11 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot()
     {
-        //
+        
+        Blade::directive('highlightStatus', function ($status) {
+            return "<?php echo ($status == 'special') ? 'class=\"special-item\"' : (($status == 'work') ? 'class=\"work-item\"' : ''); ?>";
+        });
     }
 }

@@ -2,25 +2,32 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
+use App\Models\User;
+use App\Policies\AdminPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate; // Добавьте это
 
 class AuthServiceProvider extends ServiceProvider
 {
     /**
-     * The model to policy mappings for the application.
+     * Список политики, соответствующий моделям.
      *
-     * @var array<class-string, class-string>
+     * @var array
      */
     protected $policies = [
-        //
+        User::class => AdminPolicy::class,
     ];
 
     /**
-     * Register any authentication / authorization services.
+     * Зарегистрируйте любые приложения для авторизации.
+     *
+     * @return void
      */
-    public function boot(): void
+    public function boot()
     {
-        //
+        $this->registerPolicies();
+
+        // Используем Gate для проверки роли admin
+        Gate::define('admin', [AdminPolicy::class, 'manage']);
     }
 }
